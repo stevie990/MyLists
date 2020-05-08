@@ -3,11 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/itemsFragment">
+    app:startDestination="@id/listsFragment">
 
     <fragment
         android:id="@+id/itemsFragment"
         android:name="com.sserra.mylists.items.ItemsFragment"
         android:label="fragment_items"
-        tools:layout="@layout/fragment_items" />
+        tools:layout="@layout/fragment_items" >
+        <argument
+            android:name="listId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/listsFragment"
+        android:name="com.sserra.mylists.lists.ListsFragment"
+        android:label="ListsFragment"
+        tools:layout="@layout/fragment_lists">
+        <action
+            android:id="@+id/action_listsFragment_to_itemsFragment"
+            app:destination="@id/itemsFragment" />
+    </fragment>
 </navigation>

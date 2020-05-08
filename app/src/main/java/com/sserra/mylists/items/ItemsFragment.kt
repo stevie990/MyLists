@@ -6,9 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.sserra.mylists.R
 
 import com.sserra.mylists.databinding.FragmentItemsBinding
+import kotlinx.android.synthetic.main.fragment_items.view.*
+import timber.log.Timber
 
 class ItemsFragment : Fragment() {
 
@@ -16,21 +20,18 @@ class ItemsFragment : Fragment() {
         ItemsViewModelFactory()
     }
 
-//    private val viewModel: ItemsViewModel by viewModels {
-//        ItemsViewModelFactory()
-//    }
-
-//    private val viewModel = ViewModelProvider(this, ItemsViewModelFactory()).get(ItemsViewModel::class.java)
+    private val args: ItemsFragmentArgs by navArgs()
 
     private lateinit var viewDataBinding: FragmentItemsBinding
+    private lateinit var listAdapter: ItemsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewDataBinding = FragmentItemsBinding.inflate(inflater, container, false)
             .apply {
-            itemsViewmodel = viewModel
-        }
+                itemsViewmodel = viewModel
+            }
 
-//        setHasOptionsMenu(true)
+        setHasOptionsMenu(true)
 
         // Inflate the layout for this fragment
         return viewDataBinding.root
@@ -40,5 +41,28 @@ class ItemsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         this.viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
+
+        this.setupListAdapter()
+
+//        viewModel.items.observe(this, Observer {
+//
+//        })
+    }
+
+    private fun setupListAdapter() {
+        val viewModel = viewDataBinding.itemsViewmodel
+        if (viewModel != null) {
+            listAdapter = ItemsAdapter(viewModel)
+            viewDataBinding.itemsList.adapter = listAdapter
+        } else {
+            Timber.w("ViewModel not initialized when attempting to set up adapter.")
+        }
+    }
+
+    private fun setupFab() {
+        activity?.findViewById<FloatingActionButton>(R.id.add_item_fab)?.let {
+            it.setOnClickListener {
+            }
+        }
     }
 }

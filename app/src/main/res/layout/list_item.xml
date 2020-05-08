@@ -6,38 +6,30 @@
     <data>
 
         <variable
-            name="item"
-            type="com.sserra.mylists.data.Item" />
+            name="list"
+            type="com.sserra.mylists.data.MyList" />
 
         <variable
             name="viewmodel"
-            type="com.sserra.mylists.items.ItemsViewModel" />
+            type="com.sserra.mylists.lists.ListsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <CheckBox
-            android:id="@+id/complete_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:checked="@{item.isCompleted()}"
-            app:layout_constraintBaseline_toBaselineOf="@+id/title_text"
-            app:layout_constraintStart_toStartOf="parent" />
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> viewmodel.displayList(list.id)}">
 
         <TextView
             android:id="@+id/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="@{item.title}"
+            android:text="@{list.title}"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/complete_checkbox"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Title" />
     </androidx.constraintlayout.widget.ConstraintLayout>

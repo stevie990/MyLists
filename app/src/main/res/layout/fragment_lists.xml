@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="itemsViewmodel"
-            type="com.sserra.mylists.items.ItemsViewModel" />
+            name="listsViewmodel"
+            type="com.sserra.mylists.lists.ListsViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -17,14 +17,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".items.ItemsFragment">
+            tools:context=".items.ListsFragment">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/items_list"
+                android:id="@+id/mylists_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:items="@{itemsViewmodel.items}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:lists="@{listsViewmodel.lists}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +33,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_item_fab"
+            android:id="@+id/add_list_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right|end"
