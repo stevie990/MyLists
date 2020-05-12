@@ -30,7 +30,6 @@ class ListsViewModel() : ViewModel() {
         firestore.collection("lists").addSnapshotListener { querySnapshot, firebaseFirestoreException ->
             if (firebaseFirestoreException != null){
                 Timber.w("Listen Failed")
-//                Log.w("TAG", "Listen Failed", firebaseFirestoreException)
                 return@addSnapshotListener
             }
 
@@ -38,7 +37,8 @@ class ListsViewModel() : ViewModel() {
                 val allLists = ArrayList<MyList>()
                 val documents = querySnapshot.documents
                 documents.forEach {
-                    val list = it.toObject(MyList::class.java)
+                    var list = it.toObject(MyList::class.java)
+                    list?.id = it.id
                     if (list != null){
                         allLists.add(list)
                     }
@@ -51,5 +51,9 @@ class ListsViewModel() : ViewModel() {
 
     fun displayList(listId: String){
         _openList.value = listId
+    }
+
+    fun displayListComplete(){
+        _openList.value = null
     }
 }

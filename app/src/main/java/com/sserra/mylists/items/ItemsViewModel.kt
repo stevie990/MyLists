@@ -1,16 +1,19 @@
 package com.sserra.mylists.items
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.sserra.mylists.data.Item
+import timber.log.Timber
 
 class ItemsViewModel() : ViewModel() {
 
     private var firestore : FirebaseFirestore
+    private lateinit var listId: String
 
     private var _items: MutableLiveData<ArrayList<Item>> = MutableLiveData<ArrayList<Item>>()
     val items: LiveData<ArrayList<Item>>
@@ -19,11 +22,11 @@ class ItemsViewModel() : ViewModel() {
     init {
         firestore = FirebaseFirestore.getInstance()
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
-        listenToItems()
     }
 
-    private fun listenToItems() {
-        firestore.collection("items").addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+    private fun listenToItems(listId: String) {
+        this.listId = listId
+        firestore.collection("lists").document(listId).collection("items").addSnapshotListener { querySnapshot, firebaseFirestoreException ->
             if (firebaseFirestoreException != null){
                 Log.w("TAG", "Listen Failed", firebaseFirestoreException)
                 return@addSnapshotListener
@@ -48,4 +51,11 @@ class ItemsViewModel() : ViewModel() {
 //        // Open an item here
 //    }
 
+    fun setListId(listId: String){
+        listenToItems(listId)
+    }
+
+    fun addNewItem(item: Item, listId: String){
+        firestore.collection("lists").document(listId).collection("items").add(item)
+    }
 }

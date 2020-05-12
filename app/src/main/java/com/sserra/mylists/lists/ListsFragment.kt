@@ -54,11 +54,12 @@ class ListsFragment : Fragment() {
     }
 
     private fun setupNavigation(){
-//        viewModel.openList.observe(this, Observer {
-//            it?.let {
-//                this.navigateToItemsList(it)
-//            }
-//        })
+        viewModel.openList.observe(this, Observer {
+            it?.let {
+                this.navigateToItemsList(it)
+                viewModel.displayListComplete()
+            }
+        })
     }
 
     private fun setupFab() {

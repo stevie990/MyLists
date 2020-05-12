@@ -11,7 +11,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sserra.mylists.R
 
 import com.sserra.mylists.databinding.FragmentItemsBinding
-import kotlinx.android.synthetic.main.fragment_items.view.*
 import timber.log.Timber
 
 class ItemsFragment : Fragment() {
@@ -25,13 +24,18 @@ class ItemsFragment : Fragment() {
     private lateinit var viewDataBinding: FragmentItemsBinding
     private lateinit var listAdapter: ItemsAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         viewDataBinding = FragmentItemsBinding.inflate(inflater, container, false)
             .apply {
                 itemsViewmodel = viewModel
             }
 
         setHasOptionsMenu(true)
+        viewModel.setListId(args.listId)
 
         // Inflate the layout for this fragment
         return viewDataBinding.root
@@ -43,6 +47,7 @@ class ItemsFragment : Fragment() {
         this.viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
         this.setupListAdapter()
+        this.setupFab()
 
 //        viewModel.items.observe(this, Observer {
 //
@@ -62,7 +67,9 @@ class ItemsFragment : Fragment() {
     private fun setupFab() {
         activity?.findViewById<FloatingActionButton>(R.id.add_item_fab)?.let {
             it.setOnClickListener {
+                AddItemDialogFragment(listId = args.listId).show(fragmentManager!!, AddItemDialogFragment.TAG)
             }
         }
     }
+
 }
