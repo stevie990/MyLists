@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.sserra.mylists.R
+import com.sserra.mylists.data.Item
 
 import com.sserra.mylists.databinding.FragmentItemsBinding
 import timber.log.Timber
@@ -65,11 +64,14 @@ class ItemsFragment : Fragment() {
     }
 
     private fun setupFab() {
-        activity?.findViewById<FloatingActionButton>(R.id.add_item_fab)?.let {
+        viewDataBinding.addItemFab.let {
             it.setOnClickListener {
-                AddItemDialogFragment(listId = args.listId).show(fragmentManager!!, AddItemDialogFragment.TAG)
+                AddItemDialogFragment().show(childFragmentManager, AddItemDialogFragment.TAG)
             }
         }
     }
 
+    fun addNewItem(item: Item) {
+        viewModel.addNewItem(item)
+    }
 }

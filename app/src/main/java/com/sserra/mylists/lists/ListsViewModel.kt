@@ -38,7 +38,6 @@ class ListsViewModel() : ViewModel() {
                 val documents = querySnapshot.documents
                 documents.forEach {
                     var list = it.toObject(MyList::class.java)
-                    list?.id = it.id
                     if (list != null){
                         allLists.add(list)
                     }
@@ -55,5 +54,9 @@ class ListsViewModel() : ViewModel() {
 
     fun displayListComplete(){
         _openList.value = null
+    }
+
+    fun addNewList(list: MyList) {
+        firestore.collection("lists").document(list.id.toString()).set(list)
     }
 }

@@ -8,15 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.sserra.mylists.R
+import com.sserra.mylists.data.MyList
 
 import com.sserra.mylists.databinding.FragmentListsBinding
 import timber.log.Timber
 
 class ListsFragment : Fragment() {
 
-    private val viewModel: ListsViewModel by viewModels {
+    val viewModel: ListsViewModel by viewModels {
         ListsViewModelFactory()
     }
 
@@ -41,6 +40,7 @@ class ListsFragment : Fragment() {
 
         this.setupListAdapter()
         this.setupNavigation()
+        this.setupFab()
     }
 
     private fun setupListAdapter() {
@@ -63,8 +63,9 @@ class ListsFragment : Fragment() {
     }
 
     private fun setupFab() {
-        activity?.findViewById<FloatingActionButton>(R.id.add_list_fab)?.let {
+        viewDataBinding.addListFab.let {
             it.setOnClickListener {
+                AddListDialogFragment().show(childFragmentManager, AddListDialogFragment.TAG)
             }
         }
     }
@@ -72,5 +73,9 @@ class ListsFragment : Fragment() {
     private fun navigateToItemsList(listId: String){
         val action = ListsFragmentDirections.actionListsFragmentToItemsFragment(listId)
         findNavController().navigate(action)
+    }
+
+    fun addNewList(list: MyList) {
+        viewModel.addNewList(list)
     }
 }
