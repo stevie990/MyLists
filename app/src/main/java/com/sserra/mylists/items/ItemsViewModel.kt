@@ -4,9 +4,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.selection.Selection
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.sserra.mylists.data.Item
 import timber.log.Timber
 
@@ -20,7 +23,8 @@ class ItemsViewModel() : ViewModel() {
         get() = _items
 
     init {
-        firestore = FirebaseFirestore.getInstance()
+        firestore = Firebase.firestore
+//            FirebaseFirestore.getInstance()
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
     }
 
@@ -65,5 +69,9 @@ class ItemsViewModel() : ViewModel() {
                 Timber.i("Item ${item.title} completed") }
             .addOnFailureListener {
                 Timber.i("Item ${item.title} completion failed") }
+    }
+
+    fun deleteItems(selectedItems: Selection<Item>){
+
     }
 }

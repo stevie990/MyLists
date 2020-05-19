@@ -16,8 +16,8 @@ class ListsViewModel() : ViewModel() {
     val lists: LiveData<ArrayList<MyList>>
         get() = _lists
 
-    private val _openList = MutableLiveData<String>()
-    val openList: LiveData<String>
+    private val _openList = MutableLiveData<MyList>()
+    val openList: LiveData<MyList>
         get() = _openList
 
     init {
@@ -48,8 +48,8 @@ class ListsViewModel() : ViewModel() {
         }
     }
 
-    fun displayList(listId: String){
-        _openList.value = listId
+    fun displayList(list: MyList){
+        _openList.value = list
     }
 
     fun displayListComplete(){

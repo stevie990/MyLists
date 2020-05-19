@@ -17,7 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> viewmodel.displayList(list.id)}">
+        android:onClick="@{() -> viewmodel.displayList(list)}">
 
         <TextView
             android:id="@+id/title_text"

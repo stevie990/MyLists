@@ -70,8 +70,8 @@ class ListsFragment : Fragment() {
         }
     }
 
-    private fun navigateToItemsList(listId: String){
-        val action = ListsFragmentDirections.actionListsFragmentToItemsFragment(listId)
+    private fun navigateToItemsList(list: MyList){
+        val action = ListsFragmentDirections.actionListsFragmentToItemsFragment(list.id.toString(), list.title.toString())
         findNavController().navigate(action)
     }
 

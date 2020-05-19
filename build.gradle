@@ -62,7 +62,7 @@ ext {
     materialVersion = '1.0.0'
     mockitoVersion = '2.8.9'
     moshiVersion = "1.8.0"
-    recyclerViewVersion = '1.0.0'
+    recyclerViewVersion = '1.1.0'
     retrofitVersion = "2.5.0"
     retrofitCoroutinesAdapterVersion = "0.9.2"
     robolectricVersion = '4.3.1'
