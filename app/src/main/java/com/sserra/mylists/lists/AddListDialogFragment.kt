@@ -59,6 +59,6 @@ class AddListDialogFragment : DialogFragment() {
     }
 
     companion object {
-        const val TAG = "AddListDialog"
+        const val TAG = R.string.add_list_dialog
     }
 }

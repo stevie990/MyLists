@@ -2,13 +2,12 @@ package com.sserra.mylists.items
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.selection.SelectionPredicates
-import androidx.recyclerview.selection.SelectionTracker
-import androidx.recyclerview.selection.StableIdKeyProvider
-import androidx.recyclerview.selection.StorageStrategy
+import androidx.recyclerview.selection.*
 import com.sserra.mylists.R
 import com.sserra.mylists.data.Item
 
@@ -17,21 +16,19 @@ import timber.log.Timber
 
 class ItemsFragment : Fragment() {
 
-    private val viewModel: ItemsViewModel by viewModels {
-        ItemsViewModelFactory()
-    }
-
     private val args: ItemsFragmentArgs by navArgs()
+
+    private val viewModel: ItemsViewModel by viewModels {
+        ItemsViewModelFactory(args.listId)
+    }
 
     private lateinit var viewDataBinding: FragmentItemsBinding
     private lateinit var listAdapter: ItemsAdapter
-    private var tracker: SelectionTracker<Long>? = null
+    private var tracker: SelectionTracker<String>? = null
+    private var actionMode: ActionMode? = null
+    private var isInActionMode: Boolean = false
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         viewDataBinding = FragmentItemsBinding.inflate(inflater, container, false)
             .apply {
@@ -39,7 +36,6 @@ class ItemsFragment : Fragment() {
             }
 
         setHasOptionsMenu(true)
-        viewModel.setListId(args.listId)
 
         // Inflate the layout for this fragment
         return viewDataBinding.root
@@ -47,6 +43,7 @@ class ItemsFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         this.tracker?.onSaveInstanceState(outState)
+        outState.putBoolean("IsInActionMode", isInActionMode)
         super.onSaveInstanceState(outState)
     }
 
@@ -61,6 +58,11 @@ class ItemsFragment : Fragment() {
 
         if (savedInstanceState != null) {
             this.tracker?.onRestoreInstanceState(savedInstanceState)
+
+            if (savedInstanceState.getBoolean("IsInActionMode", false)){
+                actionMode = (activity as AppCompatActivity).startSupportActionMode(actionModeCallback)
+                actionMode?.title = "${tracker?.selection?.size()} selected"
+            }
         }
 
 //        viewModel.items.observe(this, Observer {
@@ -68,44 +70,54 @@ class ItemsFragment : Fragment() {
 //        })
 
         this.tracker?.addObserver(
-            object : SelectionTracker.SelectionObserver<Long>() {
+            object : SelectionTracker.SelectionObserver<String>() {
                 override fun onSelectionChanged() {
-                    val nItems: Int? = tracker?.selection?.size()
+                    val itemsSelected = tracker?.selection?.size()
 
-                    if (nItems != null && nItems > 0) {
-                        // Change title and color of action bar
+                    if (itemsSelected!! > 0){
+                        if (actionMode == null) {
+                            actionMode = (activity as AppCompatActivity).startSupportActionMode(actionModeCallback)
+                        }
 
-//                        title = "$nItems items selected"
-//                        supportActionBar?.setBackgroundDrawable(
-//                            ColorDrawable(Color.parseColor("#ef6c00")))
+                        actionMode?.title = "$itemsSelected selected"
                     } else {
-                        // Reset color and title to default values
-
-//                        title = "RVSelection"
-//                        supportActionBar?.setBackgroundDrawable(
-//                            ColorDrawable(getColor(R.color.colorPrimary)))
+                        actionMode?.finish()
                     }
+
+//                    if (itemsSelected != null && itemsSelected > 0) {
+//                        // Change title and color of action bar
+//
+////                        title = "$itemsSelected items selected"
+////                        supportActionBar?.setBackgroundDrawable(
+////                            ColorDrawable(Color.parseColor("#ef6c00")))
+//                    } else {
+//                        // Reset color and title to default values
+//
+////                        title = "RVSelection"
+////                        supportActionBar?.setBackgroundDrawable(
+////                            ColorDrawable(getColor(R.color.colorPrimary)))
+//                    }
                 }
             }
         )
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.items_menu, menu)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        super.onCreateOptionsMenu(menu, inflater)
+//        inflater.inflate(R.menu.items_contextual_action_bar, menu)
+////        itemsMenu = menu
+//    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_delete -> {
-                // Call viewmodel in order to delete the selected items
-//                viewModel.deleteItems(tracker?.selection)
-                return true
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            R.id.action_delete -> {
+//                // Call viewmodel in order to delete selected items
+//                )
+//                return true
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.itemsViewmodel
@@ -120,19 +132,22 @@ class ItemsFragment : Fragment() {
     private fun setupFab() {
         viewDataBinding.addItemFab.let {
             it.setOnClickListener {
-                AddItemDialogFragment().show(childFragmentManager, AddItemDialogFragment.TAG)
+                AddItemDialogFragment().show(
+                    childFragmentManager,
+                    AddItemDialogFragment.TAG.toString()
+                )
                 tracker?.clearSelection()
             }
         }
     }
 
     private fun setupTracker() {
-        this.tracker = SelectionTracker.Builder<Long>(
+        this.tracker = SelectionTracker.Builder(
             "selection-1",
             viewDataBinding.itemsList,
-            RecyclerViewIdKeyProvider(viewDataBinding.itemsList),
-            MyLookup(viewDataBinding.itemsList),
-            StorageStrategy.createLongStorage()
+            MyItemKeyProvider(listAdapter),
+            MyItemDetailsLookup(viewDataBinding.itemsList),
+            StorageStrategy.createStringStorage()
         ).withSelectionPredicate(
             SelectionPredicates.createSelectAnything()
         ).build()
@@ -142,5 +157,41 @@ class ItemsFragment : Fragment() {
 
     fun addNewItem(item: Item) {
         viewModel.addNewItem(item)
+    }
+
+    fun deleteSelectedItems() {
+        tracker?.selection?.let {
+            viewModel.deleteItems(it)
+            tracker?.clearSelection()
+            actionMode = null
+        }
+    }
+
+    private val actionModeCallback = object : ActionMode.Callback {
+
+        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            mode?.menuInflater?.inflate(R.menu.items_contextual_action_bar, menu)
+            isInActionMode = true
+            return true
+        }
+
+        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+
+            return when (item?.itemId) {
+                R.id.action_delete -> {
+                    DeleteItemsDialogFragment().show(childFragmentManager, DeleteItemsDialogFragment.TAG.toString())
+                    true
+                }
+                else -> false
+            }
+        }
+
+        override fun onDestroyActionMode(mode: ActionMode?) {
+            isInActionMode = false
+            tracker?.clearSelection()
+            actionMode = null
+        }
+
+        override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean = false
     }
 }

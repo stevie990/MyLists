@@ -1,52 +1,33 @@
 package com.sserra.mylists.lists
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.sserra.mylists.data.MyList
-import timber.log.Timber
+import com.sserra.mylists.model.FirestoreService
+import com.sserra.mylists.model.Repository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 
-class ListsViewModel() : ViewModel() {
+class ListsViewModel : ViewModel() {
 
-    private var firestore: FirebaseFirestore
+    private var firestore: FirebaseFirestore = Firebase.firestore
+    private val firestoreService = FirestoreService()
+    private val repository = Repository.getInstance(firestoreService)
 
-    private var _lists: MutableLiveData<ArrayList<MyList>> = MutableLiveData<ArrayList<MyList>>()
-    val lists: LiveData<ArrayList<MyList>>
-        get() = _lists
+    init {
+        firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
+    }
+
+    @ExperimentalCoroutinesApi
+    val lists = repository.getLists().asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
 
     private val _openList = MutableLiveData<MyList>()
     val openList: LiveData<MyList>
         get() = _openList
-
-    init {
-        firestore = FirebaseFirestore.getInstance()
-        firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
-        listenToLists()
-    }
-
-    private fun listenToLists() {
-        firestore.collection("lists").addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-            if (firebaseFirestoreException != null){
-                Timber.w("Listen Failed")
-                return@addSnapshotListener
-            }
-
-            if (querySnapshot != null){
-                val allLists = ArrayList<MyList>()
-                val documents = querySnapshot.documents
-                documents.forEach {
-                    var list = it.toObject(MyList::class.java)
-                    if (list != null){
-                        allLists.add(list)
-                    }
-                }
-
-                _lists.value = allLists
-            }
-        }
-    }
 
     fun displayList(list: MyList){
         _openList.value = list
@@ -57,6 +38,8 @@ class ListsViewModel() : ViewModel() {
     }
 
     fun addNewList(list: MyList) {
-        firestore.collection("lists").document(list.id.toString()).set(list)
+        viewModelScope.launch {
+            repository.addNewList(list)
+        }
     }
 }

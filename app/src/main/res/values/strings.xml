@@ -7,4 +7,11 @@
     <string name="add_list">Add list</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
+    <string name="delete_item">Delete item</string>
+    <string name="item_delete_textView">Are you sure?</string>
+
+    <!--    DIALOG TAGS    -->
+    <string name="add_list_dialog">AddListDialog</string>
+    <string name="add_item_dialog">AddItemDialog</string>
+    <string name="delete_items_dialog">DeleteItemsDialog</string>
 </resources>

@@ -15,7 +15,7 @@ import timber.log.Timber
 
 class ListsFragment : Fragment() {
 
-    val viewModel: ListsViewModel by viewModels {
+    private val viewModel: ListsViewModel by viewModels {
         ListsViewModelFactory()
     }
 
@@ -54,7 +54,7 @@ class ListsFragment : Fragment() {
     }
 
     private fun setupNavigation(){
-        viewModel.openList.observe(this, Observer {
+        viewModel.openList.observe(viewLifecycleOwner, Observer {
             it?.let {
                 this.navigateToItemsList(it)
                 viewModel.displayListComplete()
@@ -65,7 +65,7 @@ class ListsFragment : Fragment() {
     private fun setupFab() {
         viewDataBinding.addListFab.let {
             it.setOnClickListener {
-                AddListDialogFragment().show(childFragmentManager, AddListDialogFragment.TAG)
+                AddListDialogFragment().show(childFragmentManager, AddListDialogFragment.TAG.toString())
             }
         }
     }

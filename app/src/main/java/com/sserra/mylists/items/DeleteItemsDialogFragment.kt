@@ -5,31 +5,26 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.sserra.mylists.R
+import com.sserra.mylists.databinding.DialogDeleteItemBinding
 
-import com.sserra.mylists.data.Item
-import com.sserra.mylists.databinding.DialogAddItemBinding
-import java.lang.IllegalStateException
-import java.util.*
+class DeleteItemsDialogFragment : DialogFragment() {
 
-class AddItemDialogFragment : DialogFragment() {
-
-    private lateinit var viewDataBinding: DialogAddItemBinding
+    private lateinit var viewDataBinding: DialogDeleteItemBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-
         return activity?.let {
 
             val builder = AlertDialog.Builder(it)
             val inflater = requireActivity().layoutInflater
 
-            viewDataBinding = DialogAddItemBinding.inflate(inflater, null, false)
+            viewDataBinding = DialogDeleteItemBinding.inflate(inflater, null, false)
 
             builder.setView(viewDataBinding.root)
-                .setTitle(R.string.add_item)
+                .setTitle(R.string.delete_item)
                 .setPositiveButton(
-                    R.string.add_item_button
+                    R.string.delete
                 ) { dialog, id ->
-                    onAddNewItemClicked()
+                    onDeleteItemClicked()
                 }
                 .setNegativeButton(
                     R.string.cancel
@@ -44,25 +39,12 @@ class AddItemDialogFragment : DialogFragment() {
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
-    private fun onAddNewItemClicked() {
-        val item = Item(
-            title = viewDataBinding.newItemTitleEditText.text.toString(),
-            id = UUID.randomUUID().toString()
-        )
-
+    private fun onDeleteItemClicked(){
         val itemFragment = parentFragment as ItemsFragment
-        itemFragment.addNewItem(item)
+        itemFragment.deleteSelectedItems()
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        dialog?.window?.setLayout(
-//            ViewGroup.LayoutParams.MATCH_PARENT,
-//            ViewGroup.LayoutParams.WRAP_CONTENT
-//        )
-//    }
-
     companion object {
-        const val TAG = R.string.add_item_dialog
+        const val TAG = R.string.delete_items_dialog
     }
 }
