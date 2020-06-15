@@ -3,6 +3,7 @@ package com.sserra.mylists
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textview.MaterialTextView
 import com.sserra.mylists.data.Item
 import com.sserra.mylists.data.MyList
 import com.sserra.mylists.items.ItemsAdapter
@@ -27,3 +28,10 @@ fun setItems(listView: RecyclerView, items: List<Item>?) {
         (listView.adapter as ItemsAdapter).submitList(items)
     }
 }
+
+//@BindingAdapter("app:listItemsCount")
+//fun setListItemsCount(textView: MaterialTextView, listId: String?) {
+//    listId?.let {
+//        textView.text =
+//    }
+//}

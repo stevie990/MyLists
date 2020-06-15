@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- MyList Application Theme -->
+    <style name="Theme.MyList" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorPrimaryVariant">@color/primaryLightColor</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/primaryTextColor</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeStyle">@style/Widget.App.ActionMode</item>
+        <item name="actionModeCloseDrawable">@drawable/ic_close_white</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MyList.MaterialAlertDialog</item>
+        <!--        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>-->
+    </style>
+
+    <!-- MaterialAlertDialog Theme -->
+    <style name="ThemeOverlay.MyList.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.MyList.Button</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.MyList.Button.TextButton</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.MyList.Title.Text</item>
+    </style>
+
+</resources>

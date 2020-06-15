@@ -22,6 +22,11 @@ class Repository private constructor(private val firestoreService: FirestoreServ
     }
 
     @ExperimentalCoroutinesApi
+    fun getListItemsCount(listId: String): Flow<Int> {
+        return firestoreService.getListItemsCount(listId)
+    }
+
+    @ExperimentalCoroutinesApi
     fun getItems(listId: String): Flow<List<Item>> {
         return firestoreService.getItems(listId)
     }
@@ -32,9 +37,9 @@ class Repository private constructor(private val firestoreService: FirestoreServ
         }
     }
 
-    suspend fun completeItem(listId: String, item: Item, completed: Boolean) {
+    suspend fun completeItem(listId: String, item: Item) {
         withContext(Dispatchers.IO){
-            firestoreService.completeItem(listId, item, completed)
+            firestoreService.completeItem(listId, item)
         }
     }
 

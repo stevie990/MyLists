@@ -37,6 +37,11 @@ class ListsViewModel : ViewModel() {
         _openList.value = null
     }
 
+    @ExperimentalCoroutinesApi
+    fun getListItemsCount(listId: String): LiveData<Int> {
+        return repository.getListItemsCount(listId).asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
+    }
+
     fun addNewList(list: MyList) {
         viewModelScope.launch {
             repository.addNewList(list)

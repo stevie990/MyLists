@@ -3,7 +3,6 @@ package com.sserra.mylists.model
 import androidx.recyclerview.selection.Selection
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 import com.sserra.mylists.data.Item
@@ -17,20 +16,16 @@ import timber.log.Timber
 class FirestoreService {
     private var firestore: FirebaseFirestore = Firebase.firestore
 
-    init {
-        firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
-    }
-
     @ExperimentalCoroutinesApi
     fun getLists(): Flow<List<MyList>> = callbackFlow {
         val subscription = firestore.collection("lists")
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                if (firebaseFirestoreException != null) {
+                firebaseFirestoreException?.let {
                     Timber.w("Listen Failed")
                     return@addSnapshotListener
                 }
 
-                if (querySnapshot != null) {
+                querySnapshot?.let {
                     val allLists = querySnapshot.toObjects<MyList>()
                     offer(allLists)
                 }
@@ -47,14 +42,32 @@ class FirestoreService {
     fun getItems(listId: String): Flow<List<Item>> = callbackFlow {
         val subscription = firestore.collection("lists").document(listId).collection("items")
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                if (firebaseFirestoreException != null) {
+                firebaseFirestoreException?.let {
                     Timber.w("Listen Failed")
                     return@addSnapshotListener
                 }
 
-                if (querySnapshot != null) {
+                querySnapshot?.let {
                     val allItems = querySnapshot.toObjects<Item>().sortedBy { it.title }
                     offer(allItems)
+                }
+            }
+
+        awaitClose { subscription.remove() }
+    }
+
+    @ExperimentalCoroutinesApi
+    fun getListItemsCount(listId: String): Flow<Int> = callbackFlow {
+        val subscription = firestore.collection("lists").document(listId).collection("items")
+            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                firebaseFirestoreException?.let {
+                    Timber.w("Listen Failed")
+                    return@addSnapshotListener
+                }
+
+                querySnapshot?.let {
+                    val listItemsCount = querySnapshot.count()
+                    offer(listItemsCount)
                 }
             }
 
@@ -67,7 +80,7 @@ class FirestoreService {
             .set(item)
     }
 
-    fun completeItem(listId: String, item: Item, completed: Boolean) {
+    fun completeItem(listId: String, item: Item) {
         firestore.collection("lists").document(listId).collection("items")
             .document(item.id.toString())
             .set(item)

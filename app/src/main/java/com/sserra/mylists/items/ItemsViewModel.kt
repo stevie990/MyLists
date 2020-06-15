@@ -33,8 +33,9 @@ class ItemsViewModel(private val listId: String) : ViewModel() {
     }
 
     fun completeItem(item: Item, completed: Boolean) {
+        item.isCompleted = completed
         viewModelScope.launch {
-            repository.completeItem(listId, item, completed)
+            repository.completeItem(listId, item)
         }
     }
 
