@@ -1,5 +1,8 @@
 package com.sserra.mylists
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView

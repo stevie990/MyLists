@@ -46,4 +46,14 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="Widget.MyList.TextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:fontFamily">@font/open_sans</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!--  ActionMode  -->
+    <style name="Widget.MyList.ActionMode" parent="Widget.AppCompat.ActionMode">
+        <item name="titleTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Title</item>
+    </style>
+
 </resources>

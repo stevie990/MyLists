@@ -40,7 +40,7 @@ class ItemsAdapter(
 
         if (tracker!!.isSelected(item.id)) {
             holder.binding.itemLayout.background = ColorDrawable(
-                Color.parseColor("#80deea")
+                Color.parseColor("#9ccc65")
             )
         } else {
             // Reset color to white if not selected

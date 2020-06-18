@@ -27,4 +27,10 @@
         <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.MyList.Title.Text</item>
     </style>
 
+    <!-- ActionMode Theme -->
+    <style name="ActionModeTheme" parent="Theme.MyList">
+        <item name="actionModeStyle">@style/Widget.MyList.ActionMode</item>
+        <item name="actionMenuTextColor">#FFFFFF</item>
+    </style>
+
 </resources>

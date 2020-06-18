@@ -48,8 +48,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.6'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.6'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.2'
 
     // AndroidX - Lifecycle
@@ -75,6 +75,9 @@ dependencies {
 
     // Firebase dependency
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
+
+    // Firebase UI Authentication
+    implementation 'com.firebaseui:firebase-ui-auth:6.2.1'
 
     // Cloud Firestore - Database
     implementation 'com.google.firebase:firebase-firestore-ktx:21.4.3'

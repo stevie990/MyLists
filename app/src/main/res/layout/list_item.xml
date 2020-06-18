@@ -17,35 +17,54 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
         android:onClick="@{() -> viewmodel.displayList(list)}">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/title_text"
+        <ImageView
+            android:id="@+id/listImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="@{list.title}"
-            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:baselineAlignBottom="true"
+            android:contentDescription="@string/listImageView"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/title_textview"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_format_list_bulleted_color" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/title_textview"
+            style="@style/Widget.MyList.TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:ellipsize="end"
+            android:text="@{list.title}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/listImageView"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Title" />
 
-<!--        <com.google.android.material.textview.MaterialTextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:layout_marginEnd="16dp"-->
-<!--            android:layout_marginBottom="8dp"-->
-<!--            app:listItemsCount="@{list.id}"-->
-<!--            android:textAppearance="?attr/textAppearanceHeadline6"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            tools:text="8"/>-->
+        <!--        <com.google.android.material.textview.MaterialTextView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="8dp"-->
+        <!--            android:layout_marginEnd="16dp"-->
+        <!--            android:layout_marginBottom="8dp"-->
+        <!--            app:listItemsCount="@{list.id}"-->
+        <!--            android:textAppearance="?attr/textAppearanceHeadline6"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            tools:text="8"/>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

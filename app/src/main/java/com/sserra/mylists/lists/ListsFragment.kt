@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.sserra.mylists.data.MyList
 
 import com.sserra.mylists.databinding.FragmentListsBinding
@@ -47,7 +48,10 @@ class ListsFragment : Fragment() {
         val viewModel = viewDataBinding.listsViewmodel
         if (viewModel != null) {
             listAdapter = ListsAdapter(viewModel)
-            viewDataBinding.mylistsList.adapter = listAdapter
+            viewDataBinding.mylistsList.apply {
+                adapter = listAdapter
+                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            }
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }

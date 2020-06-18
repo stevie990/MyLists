@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.selection.*
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.sserra.mylists.R
 import com.sserra.mylists.data.Item
 
@@ -65,10 +66,6 @@ class ItemsFragment : Fragment() {
             }
         }
 
-//        viewModel.items.observe(this, Observer {
-//
-//        })
-
         this.tracker?.addObserver(
             object : SelectionTracker.SelectionObserver<String>() {
                 override fun onSelectionChanged() {
@@ -80,6 +77,7 @@ class ItemsFragment : Fragment() {
                         }
 
                         actionMode?.title = "$itemsSelected selected"
+
                     } else {
                         actionMode?.finish()
                     }
@@ -123,7 +121,10 @@ class ItemsFragment : Fragment() {
         val viewModel = viewDataBinding.itemsViewmodel
         if (viewModel != null) {
             listAdapter = ItemsAdapter(viewModel)
-            viewDataBinding.itemsList.adapter = listAdapter
+            viewDataBinding.itemsList.apply {
+                adapter = listAdapter
+                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            }
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }
