@@ -18,9 +18,14 @@
     <string name="delete_items_dialog">DeleteItemsDialog</string>
 
     <!--    Firestore    -->
-<!--    <string name="firestore_lists_collection">lists</string>-->
-<!--    <string name="firestore_items_collection">items</string>-->
+    <!--    <string name="firestore_lists_collection">lists</string>-->
+    <!--    <string name="firestore_items_collection">items</string>-->
 
 
     <string name="listImageView">List Image View</string>
+    <string name="menu_logout">Logout</string>
+
+    <string name="btn_login_text">Login</string>
+    <string name="tv_login_app_name">MyList App</string>
+    <string name="name_empty_error">Name is empty</string>
 </resources>

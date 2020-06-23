@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.sserra.mylists.data.MyList
+import com.sserra.mylists.model.FirebaseUserLiveData
 import com.sserra.mylists.model.FirestoreService
 import com.sserra.mylists.model.Repository
 import kotlinx.coroutines.Dispatchers
@@ -47,4 +48,6 @@ class ListsViewModel : ViewModel() {
             repository.addNewList(list)
         }
     }
+
+
 }
