@@ -28,12 +28,8 @@ class AddItemDialogFragment : DialogFragment() {
 
             builder.setView(viewDataBinding.root)
                 .setTitle(R.string.add_item)
-                .setPositiveButton(
-                    R.string.add_item_button, null
-                )
-                .setNegativeButton(
-                    R.string.cancel
-                ) { _, _ ->
+                .setPositiveButton(R.string.add_item_button, null)
+                .setNegativeButton(R.string.cancel) { _, _ ->
                     requireDialog().cancel()
                 }
                 .setCancelable(false)

@@ -24,12 +24,12 @@ class DeleteItemsDialogFragment : DialogFragment() {
                 .setTitle(R.string.delete_item)
                 .setPositiveButton(
                     R.string.delete
-                ) { dialog, id ->
+                ) { _, _ ->
                     onDeleteItemClicked()
                 }
                 .setNegativeButton(
                     R.string.cancel
-                ) { dialog, id ->
+                ) { _, _ ->
                     requireDialog().cancel()
                 }
                 .setCancelable(false)

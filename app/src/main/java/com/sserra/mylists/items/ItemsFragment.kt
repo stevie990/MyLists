@@ -13,15 +13,17 @@ import com.sserra.mylists.R
 import com.sserra.mylists.data.Item
 
 import com.sserra.mylists.databinding.FragmentItemsBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
 
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class ItemsFragment : Fragment() {
 
     private val args: ItemsFragmentArgs by navArgs()
 
-    private val viewModel: ItemsViewModel by viewModels {
-        ItemsViewModelFactory(args.listId)
-    }
+    private val viewModel: ItemsViewModel by viewModels()
 
     private lateinit var viewDataBinding: FragmentItemsBinding
     private lateinit var listAdapter: ItemsAdapter

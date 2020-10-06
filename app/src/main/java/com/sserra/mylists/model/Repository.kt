@@ -7,10 +7,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class Repository private constructor(private val firestoreService: FirestoreService) {
+@ExperimentalCoroutinesApi
+class Repository @Inject constructor(
+    val firestoreService: FirestoreService
+) {
 
-    @ExperimentalCoroutinesApi
     fun getLists() : Flow<List<MyList>> {
         return firestoreService.getLists()
     }
@@ -21,12 +24,10 @@ class Repository private constructor(private val firestoreService: FirestoreServ
         }
     }
 
-    @ExperimentalCoroutinesApi
     fun getListItemsCount(listId: String): Flow<Int> {
         return firestoreService.getListItemsCount(listId)
     }
 
-    @ExperimentalCoroutinesApi
     fun getItems(listId: String): Flow<List<Item>> {
         return firestoreService.getItems(listId)
     }
@@ -47,15 +48,5 @@ class Repository private constructor(private val firestoreService: FirestoreServ
         withContext(Dispatchers.IO){
             firestoreService.deleteItems(listId, selectedItems)
         }
-    }
-
-    companion object {
-        @Volatile
-        private var instance: Repository? = null
-
-        fun getInstance(firestoreService: FirestoreService) =
-            instance ?: synchronized(this) {
-                instance ?: Repository(firestoreService).also { instance = it }
-            }
     }
 }

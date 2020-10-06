@@ -11,6 +11,7 @@
     <string name="delete">Delete</string>
     <string name="delete_item">Delete item</string>
     <string name="item_delete_textView">Are you sure?</string>
+    <string name="listId">listId</string>
 
     <!--    DIALOG TAGS    -->
     <string name="add_list_dialog">AddListDialog</string>
@@ -28,4 +29,5 @@
     <string name="btn_login_text">Login</string>
     <string name="tv_login_app_name">MyList App</string>
     <string name="name_empty_error">Name is empty</string>
+
 </resources>

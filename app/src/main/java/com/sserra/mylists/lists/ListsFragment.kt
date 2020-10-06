@@ -12,18 +12,19 @@ import com.sserra.mylists.R
 import com.sserra.mylists.data.MyList
 
 import com.sserra.mylists.databinding.FragmentListsBinding
-import kotlinx.coroutines.tasks.await
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
 
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class ListsFragment : Fragment() {
 
     companion object {
         const val TAG = "ListsFragment"
     }
 
-    private val viewModel: ListsViewModel by viewModels {
-        ListsViewModelFactory()
-    }
+    private val viewModel: ListsViewModel by viewModels()
 
     private lateinit var viewDataBinding: FragmentListsBinding
     private lateinit var listAdapter: ListsAdapter

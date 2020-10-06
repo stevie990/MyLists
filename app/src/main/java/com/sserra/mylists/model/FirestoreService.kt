@@ -13,10 +13,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
 
+@ExperimentalCoroutinesApi
 class FirestoreService {
+
     private var firestore: FirebaseFirestore = Firebase.firestore
 
-    @ExperimentalCoroutinesApi
     fun getLists(): Flow<List<MyList>> = callbackFlow {
         val subscription = firestore.collection("lists")
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
@@ -38,7 +39,6 @@ class FirestoreService {
         firestore.collection("lists").document(list.id.toString()).set(list)
     }
 
-    @ExperimentalCoroutinesApi
     fun getItems(listId: String): Flow<List<Item>> = callbackFlow {
         val subscription = firestore.collection("lists").document(listId).collection("items")
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
@@ -56,7 +56,6 @@ class FirestoreService {
         awaitClose { subscription.remove() }
     }
 
-    @ExperimentalCoroutinesApi
     fun getListItemsCount(listId: String): Flow<Int> = callbackFlow {
         val subscription = firestore.collection("lists").document(listId).collection("items")
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->

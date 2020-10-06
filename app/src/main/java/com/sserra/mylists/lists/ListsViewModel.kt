@@ -1,46 +1,45 @@
 package com.sserra.mylists.lists
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.sserra.mylists.data.MyList
-import com.sserra.mylists.model.FirebaseUserLiveData
-import com.sserra.mylists.model.FirestoreService
 import com.sserra.mylists.model.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
-class ListsViewModel : ViewModel() {
+@ExperimentalCoroutinesApi
+class ListsViewModel @ViewModelInject constructor(
+    val repository: Repository
+) : ViewModel() {
 
     private var firestore: FirebaseFirestore = Firebase.firestore
-    private val firestoreService = FirestoreService()
-    private val repository = Repository.getInstance(firestoreService)
 
     init {
         firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
     }
 
-    @ExperimentalCoroutinesApi
     val lists = repository.getLists().asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
 
     private val _openList = MutableLiveData<MyList>()
     val openList: LiveData<MyList>
         get() = _openList
 
-    fun displayList(list: MyList){
+    fun displayList(list: MyList) {
         _openList.value = list
     }
 
-    fun displayListComplete(){
+    fun displayListComplete() {
         _openList.value = null
     }
 
-    @ExperimentalCoroutinesApi
     fun getListItemsCount(listId: String): LiveData<Int> {
-        return repository.getListItemsCount(listId).asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
+        return repository.getListItemsCount(listId)
+            .asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
     }
 
     fun addNewList(list: MyList) {
@@ -48,6 +47,4 @@ class ListsViewModel : ViewModel() {
             repository.addNewList(list)
         }
     }
-
-
 }
