@@ -1,4 +1,4 @@
-package com.sserra.mylists.lists
+package com.sserra.mylists.framework.presentation.lists
 
 import android.os.Bundle
 import android.view.*
@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.firebase.ui.auth.AuthUI
 import com.sserra.mylists.R
-import com.sserra.mylists.data.MyList
+import com.sserra.mylists.business.domain.model.MyList
 
 import com.sserra.mylists.databinding.FragmentListsBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,15 +26,18 @@ class ListsFragment : Fragment() {
 
     private val viewModel: ListsViewModel by viewModels()
 
-    private lateinit var viewDataBinding: FragmentListsBinding
-    private lateinit var listAdapter: ListsAdapter
+    private var _viewDataBinding: FragmentListsBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
+
+    private var _listAdapter: ListsAdapter? = null
+    private val listAdapter get() = _listAdapter!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewDataBinding = FragmentListsBinding.inflate(inflater, container, false)
+        _viewDataBinding = FragmentListsBinding.inflate(inflater, container, false)
             .apply {
                 listsViewmodel = viewModel
             }
@@ -73,8 +76,8 @@ class ListsFragment : Fragment() {
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.listsViewmodel
         if (viewModel != null) {
-            listAdapter = ListsAdapter(viewModel)
-            viewDataBinding.mylistsList.apply {
+            _listAdapter = ListsAdapter(viewModel)
+            viewDataBinding.mylistsList?.apply {
                 adapter = listAdapter
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             }
@@ -105,8 +108,8 @@ class ListsFragment : Fragment() {
 
     private fun navigateToItemsList(list: MyList) {
         val action = ListsFragmentDirections.actionListsFragmentToItemsFragment(
-            list.id.toString(),
-            list.title.toString()
+            list.id,
+            list.title
         )
 
         findNavController().navigate(action)
@@ -118,12 +121,19 @@ class ListsFragment : Fragment() {
     }
 
     fun addNewList(list: MyList) {
-        viewModel.addNewList(list)
+        val newList = viewModel.createNewList(list.id, list.title, list.description)
+        viewModel.addNewList(newList)
     }
 
     private fun signOut() {
         AuthUI.getInstance().signOut(requireContext()).addOnCompleteListener {
             this.navigateToLoginFragment()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _listAdapter = null
+        _viewDataBinding = null
     }
 }

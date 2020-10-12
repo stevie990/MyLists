@@ -1,4 +1,4 @@
-package com.sserra.mylists.lists
+package com.sserra.mylists.framework.presentation.lists
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -6,7 +6,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.sserra.mylists.data.MyList
+import com.sserra.mylists.business.domain.model.MyList
+import com.sserra.mylists.business.domain.model.MyListFactory
 import com.sserra.mylists.model.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 class ListsViewModel @ViewModelInject constructor(
-    val repository: Repository
+    private val repository: Repository,
+    private val myListFactory: MyListFactory
 ) : ViewModel() {
 
     private var firestore: FirebaseFirestore = Firebase.firestore
@@ -47,4 +49,10 @@ class ListsViewModel @ViewModelInject constructor(
             repository.addNewList(list)
         }
     }
+
+    fun createNewList(
+        id: String,
+        title: String,
+        description: String
+    ) = myListFactory.createList(id, title, description)
 }

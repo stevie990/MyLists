@@ -9,11 +9,11 @@
 
         <variable
             name="item"
-            type="com.sserra.mylists.data.Item" />
+            type="com.sserra.mylists.business.domain.model.Item" />
 
         <variable
             name="viewmodel"
-            type="com.sserra.mylists.items.ItemsViewModel" />
+            type="com.sserra.mylists.framework.presentation.items.ItemsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -5,8 +5,8 @@ import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
-import com.sserra.mylists.data.Item
-import com.sserra.mylists.data.MyList
+import com.sserra.mylists.business.domain.model.Item
+import com.sserra.mylists.business.domain.model.MyList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow

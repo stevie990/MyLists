@@ -1,14 +1,16 @@
-package com.sserra.mylists.lists
+package com.sserra.mylists.framework.presentation.lists
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.sserra.mylists.data.MyList
+import com.sserra.mylists.business.domain.model.MyList
 import com.sserra.mylists.databinding.ListItemBinding
 
-class ListsAdapter(private val viewModel: ListsViewModel) : ListAdapter<MyList, ListsAdapter.ViewHolder>(TaskDiffCallback()){
+class ListsAdapter(private val viewModel: ListsViewModel) : ListAdapter<MyList, ListsAdapter.ViewHolder>(
+    TaskDiffCallback()
+){
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)

@@ -1,4 +1,4 @@
-package com.sserra.mylists.items
+package com.sserra.mylists.framework.presentation.items
 
 import android.view.MotionEvent
 import androidx.recyclerview.selection.ItemDetailsLookup

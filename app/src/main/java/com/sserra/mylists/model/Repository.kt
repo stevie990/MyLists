@@ -1,8 +1,8 @@
 package com.sserra.mylists.model
 
 import androidx.recyclerview.selection.Selection
-import com.sserra.mylists.data.Item
-import com.sserra.mylists.data.MyList
+import com.sserra.mylists.business.domain.model.Item
+import com.sserra.mylists.business.domain.model.MyList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

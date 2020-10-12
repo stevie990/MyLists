@@ -7,7 +7,7 @@
 
         <variable
             name="listsViewmodel"
-            type="com.sserra.mylists.lists.ListsViewModel" />
+            type="com.sserra.mylists.framework.presentation.lists.ListsViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

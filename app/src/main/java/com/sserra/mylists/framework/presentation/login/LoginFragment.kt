@@ -1,4 +1,4 @@
-package com.sserra.mylists.login
+package com.sserra.mylists.framework.presentation.login
 
 import android.app.Activity
 import android.content.Intent
@@ -15,7 +15,6 @@ import com.firebase.ui.auth.IdpResponse
 import com.sserra.mylists.R
 
 import com.sserra.mylists.databinding.FragmentLoginBinding
-import com.sserra.mylists.lists.ListsFragment
 import timber.log.Timber
 
 class LoginFragment : Fragment() {
@@ -29,14 +28,16 @@ class LoginFragment : Fragment() {
         LoginViewModelFactory()
     }
 
-    private lateinit var viewDataBinding: FragmentLoginBinding
+
+    private var _viewDataBinding: FragmentLoginBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewDataBinding = FragmentLoginBinding.inflate(inflater, container, false)
+        _viewDataBinding = FragmentLoginBinding.inflate(inflater, container, false)
             .apply {
                 loginViewModel = viewModel
             }
@@ -78,7 +79,7 @@ class LoginFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == SIGN_IN_RESULT_CODE) {
-            val response = IdpResponse.fromResultIntent(data)
+//            val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 this.navigateToListFragment()
                 Timber.i("Successfully signed In")
@@ -107,5 +108,10 @@ class LoginFragment : Fragment() {
     private fun navigateToListFragment() {
         val action = LoginFragmentDirections.actionLoginFragmentToListsFragment()
         findNavController().navigate(action)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _viewDataBinding = null
     }
 }

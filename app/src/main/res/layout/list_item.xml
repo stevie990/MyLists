@@ -7,11 +7,11 @@
 
         <variable
             name="list"
-            type="com.sserra.mylists.data.MyList" />
+            type="com.sserra.mylists.business.domain.model.MyList" />
 
         <variable
             name="viewmodel"
-            type="com.sserra.mylists.lists.ListsViewModel" />
+            type="com.sserra.mylists.framework.presentation.lists.ListsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

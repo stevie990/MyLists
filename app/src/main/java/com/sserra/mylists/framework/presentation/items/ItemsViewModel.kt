@@ -1,4 +1,4 @@
-package com.sserra.mylists.items
+package com.sserra.mylists.framework.presentation.items
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
@@ -8,7 +8,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.sserra.mylists.data.Item
+import com.sserra.mylists.business.domain.model.Item
+import com.sserra.mylists.business.domain.model.ItemFactory
 import com.sserra.mylists.model.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 @ExperimentalCoroutinesApi
 class ItemsViewModel @ViewModelInject constructor(
     private val repository: Repository,
+    private val itemFactory: ItemFactory,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -50,4 +52,10 @@ class ItemsViewModel @ViewModelInject constructor(
             repository.deleteItems(listId, selectedItems)
         }
     }
+
+    fun createNewItem(
+        id: String,
+        title: String,
+        description: String
+    ) = itemFactory.createSingleItem(id, title, description)
 }

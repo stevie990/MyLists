@@ -1,4 +1,4 @@
-package com.sserra.mylists.login
+package com.sserra.mylists.framework.presentation.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

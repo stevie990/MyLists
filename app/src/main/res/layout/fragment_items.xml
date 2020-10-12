@@ -7,7 +7,7 @@
 
         <variable
             name="itemsViewmodel"
-            type="com.sserra.mylists.items.ItemsViewModel" />
+            type="com.sserra.mylists.framework.presentation.items.ItemsViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -17,7 +17,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".items.ItemsFragment">
+            tools:context=".framework.presentation.items.ItemsFragment">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/items_list"

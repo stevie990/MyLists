@@ -1,4 +1,4 @@
-package com.sserra.mylists.items
+package com.sserra.mylists.framework.presentation.items
 
 import android.os.Bundle
 import android.view.*
@@ -10,9 +10,9 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.selection.*
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.sserra.mylists.R
-import com.sserra.mylists.data.Item
-
+import com.sserra.mylists.business.domain.model.Item
 import com.sserra.mylists.databinding.FragmentItemsBinding
+
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
@@ -25,15 +25,19 @@ class ItemsFragment : Fragment() {
 
     private val viewModel: ItemsViewModel by viewModels()
 
-    private lateinit var viewDataBinding: FragmentItemsBinding
-    private lateinit var listAdapter: ItemsAdapter
+    private var _viewDataBinding: FragmentItemsBinding? = null
+    private val viewDataBinding get() = _viewDataBinding!!
+
+    private var _listAdapter: ItemsAdapter? = null
+    private val listAdapter get() = _listAdapter!!
+
     private var tracker: SelectionTracker<String>? = null
     private var actionMode: ActionMode? = null
     private var isInActionMode: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        viewDataBinding = FragmentItemsBinding.inflate(inflater, container, false)
+        _viewDataBinding = FragmentItemsBinding.inflate(inflater, container, false)
             .apply {
                 itemsViewmodel = viewModel
             }
@@ -122,7 +126,7 @@ class ItemsFragment : Fragment() {
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.itemsViewmodel
         if (viewModel != null) {
-            listAdapter = ItemsAdapter(viewModel)
+            _listAdapter = ItemsAdapter(viewModel)
             viewDataBinding.itemsList.apply {
                 adapter = listAdapter
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
@@ -159,7 +163,8 @@ class ItemsFragment : Fragment() {
     }
 
     fun addNewItem(item: Item) {
-        viewModel.addNewItem(item)
+        val newItem = viewModel.createNewItem(item.id, item.title, item.description)
+        viewModel.addNewItem(newItem)
     }
 
     fun deleteSelectedItems() {
@@ -196,5 +201,11 @@ class ItemsFragment : Fragment() {
         }
 
         override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean = false
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _viewDataBinding = null
+        _listAdapter = null
     }
 }

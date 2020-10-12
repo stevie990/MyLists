@@ -114,6 +114,9 @@ dependencies {
     // Material Design
     implementation 'com.google.android.material:material:1.2.0-alpha06'
 
+    // LeakCanary
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.5"
+
 
     // TEST
     // Test dependencies

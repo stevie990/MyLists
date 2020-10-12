@@ -1,4 +1,4 @@
-package com.sserra.mylists.items
+package com.sserra.mylists.framework.presentation.items
 
 import android.app.Dialog
 import android.os.Bundle
@@ -8,11 +8,13 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.sserra.mylists.R
 
-import com.sserra.mylists.data.Item
+import com.sserra.mylists.business.domain.model.Item
 import com.sserra.mylists.databinding.DialogAddItemBinding
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.lang.IllegalStateException
 import java.util.*
 
+@ExperimentalCoroutinesApi
 class AddItemDialogFragment : DialogFragment() {
 
     private lateinit var viewDataBinding: DialogAddItemBinding
@@ -39,12 +41,12 @@ class AddItemDialogFragment : DialogFragment() {
 
             dialog.setOnShowListener {
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                    if (isNameValid(viewDataBinding.newItemTitleEditText.text)) {
-                        viewDataBinding.newItemTitleEditText.error = null
+                    if (isNameValid(viewDataBinding.etNewItemTitle.text)) {
+                        viewDataBinding.etNewItemTitle.error = null
                         onAddNewItemClicked()
                         dialog.dismiss()
                     } else {
-                        viewDataBinding.newItemTitleEditText.error = getString(R.string.name_empty_error)
+                        viewDataBinding.etNewItemTitle.error = getString(R.string.name_empty_error)
                     }
                 }
             }
@@ -55,8 +57,12 @@ class AddItemDialogFragment : DialogFragment() {
 
     private fun onAddNewItemClicked() {
         val item = Item(
-            title = viewDataBinding.newItemTitleEditText.text.toString(),
-            id = UUID.randomUUID().toString()
+            id = UUID.randomUUID().toString(),
+            title = viewDataBinding.etNewItemTitle.text.toString(),
+            description = "",
+            isCompleted = false,
+            created_at = "",
+            updated_at = ""
         )
 
         val itemFragment = parentFragment as ItemsFragment

@@ -1,4 +1,4 @@
-package com.sserra.mylists.items
+package com.sserra.mylists.framework.presentation.items
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -9,7 +9,7 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.sserra.mylists.data.Item
+import com.sserra.mylists.business.domain.model.Item
 import com.sserra.mylists.databinding.ItemItemBinding
 
 class ItemsAdapter(

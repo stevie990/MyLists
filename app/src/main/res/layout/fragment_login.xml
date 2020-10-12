@@ -6,13 +6,13 @@
     <data>
         <variable
             name="loginViewModel"
-            type="com.sserra.mylists.login.LoginViewModel" />
+            type="com.sserra.mylists.framework.presentation.login.LoginViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".login.LoginFragment">
+        tools:context=".framework.presentation.login.LoginFragment">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_login_app_name"

@@ -1,16 +1,11 @@
-package com.sserra.mylists
+package com.sserra.mylists.framework.presentation
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.view.View
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.textview.MaterialTextView
-import com.sserra.mylists.data.Item
-import com.sserra.mylists.data.MyList
-import com.sserra.mylists.items.ItemsAdapter
-import com.sserra.mylists.lists.ListsAdapter
+import com.sserra.mylists.business.domain.model.Item
+import com.sserra.mylists.business.domain.model.MyList
+import com.sserra.mylists.framework.presentation.items.ItemsAdapter
+import com.sserra.mylists.framework.presentation.lists.ListsAdapter
 
 /**
  * [BindingAdapter]s for the [List]s list.

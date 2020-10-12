@@ -1,4 +1,4 @@
-package com.sserra.mylists.lists
+package com.sserra.mylists.framework.presentation.lists
 
 import android.app.Dialog
 import android.os.Bundle
@@ -8,12 +8,13 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.sserra.mylists.R
 
-import com.sserra.mylists.data.MyList
+import com.sserra.mylists.business.domain.model.MyList
 import com.sserra.mylists.databinding.DialogAddListBinding
-import kotlinx.android.synthetic.main.dialog_add_list.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.lang.IllegalStateException
 import java.util.*
 
+@ExperimentalCoroutinesApi
 class AddListDialogFragment : DialogFragment() {
 
     private lateinit var viewDataBinding: DialogAddListBinding
@@ -60,8 +61,11 @@ class AddListDialogFragment : DialogFragment() {
 
     private fun onAddNewListClicked() {
             val list = MyList(
+                id = UUID.randomUUID().toString(),
                 title =  viewDataBinding.etListName.text.toString(),
-                id = UUID.randomUUID().toString()
+                description = "",
+                created_at = "",
+                updated_at = ""
             )
 
             val listsFragment = parentFragment as ListsFragment

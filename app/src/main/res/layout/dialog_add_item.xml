@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        tools:context=".items.AddItemDialogFragment">
+        tools:context=".framework.presentation.items.AddItemDialogFragment">
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent" >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/new_item_title_editText"
+                android:id="@+id/etNewItemTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapSentences"

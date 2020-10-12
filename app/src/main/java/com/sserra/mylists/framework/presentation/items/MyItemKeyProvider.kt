@@ -1,4 +1,4 @@
-package com.sserra.mylists.items
+package com.sserra.mylists.framework.presentation.items
 
 import androidx.recyclerview.selection.ItemKeyProvider
 
