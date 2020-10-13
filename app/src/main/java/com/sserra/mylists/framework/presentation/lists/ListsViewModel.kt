@@ -2,10 +2,6 @@ package com.sserra.mylists.framework.presentation.lists
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.sserra.mylists.business.domain.model.MyList
 import com.sserra.mylists.business.domain.model.MyListFactory
 import com.sserra.mylists.model.Repository
@@ -18,12 +14,6 @@ class ListsViewModel @ViewModelInject constructor(
     private val repository: Repository,
     private val myListFactory: MyListFactory
 ) : ViewModel() {
-
-    private var firestore: FirebaseFirestore = Firebase.firestore
-
-    init {
-        firestore.firestoreSettings = FirebaseFirestoreSettings.Builder().build()
-    }
 
     val lists = repository.getLists().asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
 

@@ -6,8 +6,8 @@ data class Item(
     val title: String,
     val description: String,
     var isCompleted: Boolean,
-    val updated_at: String,
-    val created_at: String
+    val created_at: String,
+    val updated_at: String
 ){
     constructor(): this("", "", "", "", false, "", "")
 }
