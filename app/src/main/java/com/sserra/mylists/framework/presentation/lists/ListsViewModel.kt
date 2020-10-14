@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import com.sserra.mylists.business.domain.model.MyList
 import com.sserra.mylists.business.domain.model.MyListFactory
 import com.sserra.mylists.business.domain.state.DataState
+import com.sserra.mylists.business.interactors.AddList
 import com.sserra.mylists.business.interactors.GetLists
 import com.sserra.mylists.framework.presentation.lists.state.MyListStateEvent
 import com.sserra.mylists.framework.presentation.lists.state.MyListStateEvent.GetMyListsEvent
@@ -22,6 +23,7 @@ class ListsViewModel @ViewModelInject constructor(
     private val repository: Repository,
     private val myListFactory: MyListFactory,
     private val getLists: GetLists,
+    private val addList: AddList,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -90,6 +92,14 @@ class ListsViewModel @ViewModelInject constructor(
 
                 viewModelScope.launch {
                     getLists.execute().onEach {
+                        _dataState.value = it
+                    }.launchIn(viewModelScope)
+                }
+            }
+
+            is MyListStateEvent.AddListEvent -> {
+                viewModelScope.launch {
+                    addList.execute(stateEvent.list).onEach {
                         _dataState.value = it
                     }.launchIn(viewModelScope)
                 }

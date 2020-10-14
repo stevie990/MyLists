@@ -2,6 +2,7 @@ package com.sserra.mylists.business.interactors
 
 import com.sserra.mylists.business.data.cache.CacheDataSource
 import com.sserra.mylists.business.data.network.NetworkDataSource
+import com.sserra.mylists.business.domain.model.MyList
 import com.sserra.mylists.business.domain.state.DataState
 import com.sserra.mylists.framework.presentation.lists.state.MyListViewState
 import kotlinx.coroutines.Dispatchers
@@ -9,20 +10,19 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
-
-class GetLists constructor(
+class AddList constructor(
     private val cacheDataSource: CacheDataSource,
     private val networkDataSource: NetworkDataSource
 ) {
 
-    suspend fun execute(): Flow<DataState<MyListViewState>> = flow {
+    suspend fun execute(list: MyList): Flow<DataState<MyListViewState>> = flow {
 
         emit(DataState.loading(true))
 
         try {
             val cachedLists = withContext(Dispatchers.IO) {
-                val networkLists = networkDataSource.getLists()
-                cacheDataSource.insertListOfLists(networkLists)
+                cacheDataSource.insertList(list)
+                networkDataSource.insertList(list)
                 cacheDataSource.getLists()
             }
 

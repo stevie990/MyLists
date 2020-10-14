@@ -1,5 +1,6 @@
 package com.sserra.mylists.framework.datasource.network.implementation
 
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObjects
 import com.sserra.mylists.framework.datasource.network.abstraction.FirestoreService
@@ -12,8 +13,8 @@ import javax.inject.Inject
 class FirestoreServiceImplementation @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : FirestoreService {
-    override suspend fun insertList(listCacheEntity: MyListNetworkEntity) {
-        TODO("Not yet implemented")
+    override suspend fun insertList(listNetworkEntity: MyListNetworkEntity) {
+        firestore.collection("lists").document(listNetworkEntity.id).set(listNetworkEntity)
     }
 
     override suspend fun getAllLists(): List<MyListNetworkEntity> {
@@ -25,7 +26,7 @@ class FirestoreServiceImplementation @Inject constructor(
             .toObjects(MyListNetworkEntity::class.java)
     }
 
-    override suspend fun insertItem(itemCacheEntity: ItemNetworkEntity) {
+    override suspend fun insertItem(itemNetworkEntity: ItemNetworkEntity) {
         TODO("Not yet implemented")
     }
 

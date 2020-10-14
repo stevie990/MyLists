@@ -1,6 +1,7 @@
 package com.sserra.mylists.model
 
 import androidx.recyclerview.selection.Selection
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObjects
@@ -42,7 +43,8 @@ class FirestoreServiceRepo @Inject constructor(
 
     fun addNewList(list: MyList) {
         val networkList = listNetworkMapper.mapToEntity(list)
-        firestore.collection("lists").document(list.id).set(networkList)
+        networkList.updated_at = Timestamp.now()
+        firestore.collection("lists").document(networkList.id).set(networkList)
     }
 
     fun getItems(listId: String): Flow<List<Item>> = callbackFlow {
@@ -81,13 +83,13 @@ class FirestoreServiceRepo @Inject constructor(
 
     fun addNewItem(listId: String, item: Item) {
         firestore.collection("lists").document(listId).collection("items")
-            .document(item.id.toString())
+            .document(item.id)
             .set(item)
     }
 
     fun completeItem(listId: String, item: Item) {
         firestore.collection("lists").document(listId).collection("items")
-            .document(item.id.toString())
+            .document(item.id)
             .set(item)
             .addOnSuccessListener {
                 Timber.i("Item ${item.title} completed")

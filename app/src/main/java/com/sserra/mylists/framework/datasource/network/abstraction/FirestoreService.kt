@@ -7,12 +7,12 @@ import com.sserra.mylists.framework.datasource.network.model.MyListNetworkEntity
 interface FirestoreService {
 
     // List
-    suspend fun insertList(listCacheEntity: MyListNetworkEntity)
+    suspend fun insertList(listNetworkEntity: MyListNetworkEntity)
 
     suspend fun getAllLists(): List<MyListNetworkEntity>
 
     // Item
-    suspend fun insertItem(itemCacheEntity: ItemNetworkEntity)
+    suspend fun insertItem(itemNetworkEntity: ItemNetworkEntity)
 
     suspend fun getAllItems(): List<ItemNetworkEntity>
 }

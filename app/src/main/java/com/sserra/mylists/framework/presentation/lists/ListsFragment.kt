@@ -12,10 +12,12 @@ import com.firebase.ui.auth.AuthUI
 import com.sserra.mylists.R
 import com.sserra.mylists.business.domain.model.MyList
 import com.sserra.mylists.business.domain.state.DataState
+import com.sserra.mylists.business.interactors.AddList
 
 import com.sserra.mylists.databinding.FragmentListsBinding
 import com.sserra.mylists.framework.presentation.DataStateListener
 import com.sserra.mylists.framework.presentation.lists.state.MyListStateEvent
+import com.sserra.mylists.framework.presentation.lists.state.MyListStateEvent.AddListEvent
 import com.sserra.mylists.framework.presentation.lists.state.MyListStateEvent.GetMyListsEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -136,7 +138,8 @@ class ListsFragment : Fragment() {
 
     fun addNewList(list: MyList) {
         val newList = viewModel.createNewList(list.id, list.title, list.description)
-        viewModel.addNewList(newList)
+        viewModel.setStateEvent(AddListEvent(newList))
+//        viewModel.addNewList(newList)
     }
 
     private fun signOut() {
