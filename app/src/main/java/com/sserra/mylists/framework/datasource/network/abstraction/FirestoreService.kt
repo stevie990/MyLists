@@ -1,0 +1,18 @@
+package com.sserra.mylists.framework.datasource.network.abstraction
+
+import com.sserra.mylists.framework.datasource.network.model.ItemNetworkEntity
+import com.sserra.mylists.framework.datasource.network.model.MyListNetworkEntity
+
+
+interface FirestoreService {
+
+    // List
+    suspend fun insertList(listCacheEntity: MyListNetworkEntity)
+
+    suspend fun getAllLists(): List<MyListNetworkEntity>
+
+    // Item
+    suspend fun insertItem(itemCacheEntity: ItemNetworkEntity)
+
+    suspend fun getAllItems(): List<ItemNetworkEntity>
+}

@@ -1,5 +1,6 @@
 package com.sserra.mylists.framework.presentation.lists
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -10,8 +11,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.firebase.ui.auth.AuthUI
 import com.sserra.mylists.R
 import com.sserra.mylists.business.domain.model.MyList
+import com.sserra.mylists.business.domain.state.DataState
 
 import com.sserra.mylists.databinding.FragmentListsBinding
+import com.sserra.mylists.framework.presentation.DataStateListener
+import com.sserra.mylists.framework.presentation.lists.state.MyListStateEvent
+import com.sserra.mylists.framework.presentation.lists.state.MyListStateEvent.GetMyListsEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
@@ -25,6 +30,8 @@ class ListsFragment : Fragment() {
     }
 
     private val viewModel: ListsViewModel by viewModels()
+
+    lateinit var dataStateHandler: DataStateListener
 
     private var _viewDataBinding: FragmentListsBinding? = null
     private val viewDataBinding get() = _viewDataBinding!!
@@ -52,9 +59,16 @@ class ListsFragment : Fragment() {
 
         this.viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
-        this.setupListAdapter()
-        this.setupNavigation()
-        this.setupFab()
+        setupListAdapter()
+        setupNavigation()
+        setupFab()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        subscribeObservers()
+        viewModel.setStateEvent(GetMyListsEvent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -77,7 +91,7 @@ class ListsFragment : Fragment() {
         val viewModel = viewDataBinding.listsViewmodel
         if (viewModel != null) {
             _listAdapter = ListsAdapter(viewModel)
-            viewDataBinding.mylistsList?.apply {
+            viewDataBinding.mylistsList.apply {
                 adapter = listAdapter
                 addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             }
@@ -135,5 +149,32 @@ class ListsFragment : Fragment() {
         super.onDestroyView()
         _listAdapter = null
         _viewDataBinding = null
+    }
+
+    // *** CLEAN MVI *****************************
+
+    private fun subscribeObservers(){
+
+        viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
+
+            dataState.data?.let { event ->
+                event.getContentIfNotHandled()?.let { myListViewState ->
+
+                    myListViewState.lists?.let {
+                        viewModel.setLists(it)
+                    }
+                }
+            }
+        })
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        try{
+            dataStateHandler = context as DataStateListener
+        }catch(e: ClassCastException){
+            println("$context must implement DataStateListener")
+        }
     }
 }

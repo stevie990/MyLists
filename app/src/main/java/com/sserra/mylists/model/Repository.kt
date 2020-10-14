@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 class Repository @Inject constructor(
-    val firestoreService: FirestoreService
+    val firestoreService: FirestoreServiceRepo
 ) {
 
     fun getLists() : Flow<List<MyList>> {

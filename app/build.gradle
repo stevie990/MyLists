@@ -95,6 +95,11 @@ dependencies {
     // Activity KTX for viewmodels()
     implementation "androidx.activity:activity-ktx:1.1.0"
 
+    def room = "2.2.5"
+    implementation "androidx.room:room-runtime:$room"
+    implementation "androidx.room:room-ktx:$room"
+    kapt "androidx.room:room-compiler:$room"
+
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:2.28-alpha"
     kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"

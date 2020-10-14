@@ -7,16 +7,21 @@ import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 import com.sserra.mylists.business.domain.model.Item
 import com.sserra.mylists.business.domain.model.MyList
+import com.sserra.mylists.framework.datasource.network.mappers.ItemNetworkMapper
+import com.sserra.mylists.framework.datasource.network.mappers.MyListNetworkMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-class FirestoreService {
-
-    private var firestore: FirebaseFirestore = Firebase.firestore
+class FirestoreServiceRepo @Inject constructor(
+    private val firestore: FirebaseFirestore,
+    private val listNetworkMapper: MyListNetworkMapper,
+    private val itemNetworkMapper: ItemNetworkMapper
+) {
 
     fun getLists(): Flow<List<MyList>> = callbackFlow {
         val subscription = firestore.collection("lists")
@@ -36,7 +41,8 @@ class FirestoreService {
     }
 
     fun addNewList(list: MyList) {
-        firestore.collection("lists").document(list.id.toString()).set(list)
+        val networkList = listNetworkMapper.mapToEntity(list)
+        firestore.collection("lists").document(list.id).set(networkList)
     }
 
     fun getItems(listId: String): Flow<List<Item>> = callbackFlow {

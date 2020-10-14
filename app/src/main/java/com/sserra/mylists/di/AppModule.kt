@@ -3,7 +3,6 @@ package com.sserra.mylists.di
 import com.sserra.mylists.business.domain.model.ItemFactory
 import com.sserra.mylists.business.domain.model.MyListFactory
 import com.sserra.mylists.business.domain.util.DateUtil
-import com.sserra.mylists.model.FirestoreService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,8 +13,8 @@ import java.util.*
 import javax.inject.Singleton
 
 @ExperimentalCoroutinesApi
-@Module
 @InstallIn(ApplicationComponent::class)
+@Module
 object AppModule {
 
     @Singleton
@@ -41,9 +40,5 @@ object AppModule {
     @Singleton
     @Provides
     fun provideMyListFactory(dateUtil: DateUtil) : MyListFactory = MyListFactory(dateUtil)
-
-    @Singleton
-    @Provides
-    fun provideFirestoreService() = FirestoreService()
 
 }
