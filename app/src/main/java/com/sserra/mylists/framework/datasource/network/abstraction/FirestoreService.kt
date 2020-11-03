@@ -12,7 +12,7 @@ interface FirestoreService {
     suspend fun getAllLists(): List<MyListNetworkEntity>
 
     // Item
-    suspend fun insertItem(itemNetworkEntity: ItemNetworkEntity)
+    suspend fun insertItem(itemNetworkEntity: ItemNetworkEntity, listId: String)
 
-    suspend fun getAllItems(): List<ItemNetworkEntity>
+    suspend fun getAllItems(listId: String): List<ItemNetworkEntity>
 }

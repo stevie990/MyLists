@@ -1,5 +1,6 @@
 package com.sserra.mylists.framework.datasource.cache.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -13,7 +14,7 @@ interface ItemDao {
     suspend fun insert(itemCacheEntity: ItemCacheEntity): Long
 
     @Query("SELECT * FROM items WHERE listId = :listId")
-    suspend fun getAllItems(listId: String): List<ItemCacheEntity>
+    fun getAllItems(listId: String): LiveData<List<ItemCacheEntity>>
 
     @Query("UPDATE items SET title = :title, description = :description,  isCompleted = :isCompleted WHERE id = :id")
     suspend fun updateItem(

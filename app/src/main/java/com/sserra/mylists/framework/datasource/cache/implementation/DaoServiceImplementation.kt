@@ -26,8 +26,8 @@ class DaoServiceImplementation constructor(
         return itemDao.insert(itemCacheEntity)
     }
 
-    override suspend fun getAllItems(): List<ItemCacheEntity> {
-        TODO("Not yet implemented")
+    override fun getAllItems(listId: String): LiveData<List<ItemCacheEntity>> {
+        return itemDao.getAllItems(listId)
     }
 
 

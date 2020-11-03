@@ -26,11 +26,19 @@ class FirestoreServiceImplementation @Inject constructor(
             .toObjects(MyListNetworkEntity::class.java)
     }
 
-    override suspend fun insertItem(itemNetworkEntity: ItemNetworkEntity) {
-        TODO("Not yet implemented")
+    override suspend fun insertItem(itemNetworkEntity: ItemNetworkEntity, listId: String) {
+        firestore.collection("lists").document(listId).collection("items")
+            .document(itemNetworkEntity.id)
+            .set(itemNetworkEntity)
     }
 
-    override suspend fun getAllItems(): List<ItemNetworkEntity> {
-        TODO("Not yet implemented")
+    override suspend fun getAllItems(listId: String): List<ItemNetworkEntity> {
+        return firestore.collection("lists").document(listId).collection("items")
+            .get()
+            .addOnFailureListener {
+                Timber.e(it)
+            }
+            .await()
+            .toObjects(ItemNetworkEntity::class.java)
     }
 }

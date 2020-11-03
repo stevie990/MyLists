@@ -9,12 +9,14 @@ interface CacheDataSource {
     // List
     suspend fun insertList(myList: MyList): Long
 
-    fun getLists() : LiveData<List<MyList>>
+    fun getLists(): LiveData<List<MyList>>
 
     suspend fun insertListOfLists(lists: List<MyList>)
 
     // Item
     suspend fun insertItem(item: Item): Long
 
-    suspend fun getItems() : List<Item>
+    fun getItems(listId: String): LiveData<List<Item>>
+
+    suspend fun insertListOfItems(items: List<Item>)
 }

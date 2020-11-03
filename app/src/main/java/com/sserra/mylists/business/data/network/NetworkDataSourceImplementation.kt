@@ -20,12 +20,12 @@ class NetworkDataSourceImplementation constructor(
         return listNetworkMapper.entityListToMyListList(firestoreService.getAllLists())
     }
 
-    override suspend fun insertItem(item: Item) {
-        firestoreService.insertItem(itemNetworkMapper.mapToEntity(item))
+    override suspend fun insertItem(item: Item, listId: String) {
+        firestoreService.insertItem(itemNetworkMapper.mapToEntity(item), listId)
     }
 
-    override suspend fun getItems(): List<Item> {
-        return itemNetworkMapper.entityListToItemsList(firestoreService.getAllItems())
+    override suspend fun getItems(listId: String): List<Item> {
+        return itemNetworkMapper.entityListToItemsList(firestoreService.getAllItems(listId))
     }
 
 }

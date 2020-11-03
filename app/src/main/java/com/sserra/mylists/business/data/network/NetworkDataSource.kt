@@ -11,7 +11,7 @@ interface NetworkDataSource {
     suspend fun getLists() : List<MyList>
 
     // Item
-    suspend fun insertItem(item: Item)
+    suspend fun insertItem(item: Item, listId: String)
 
-    suspend fun getItems() : List<Item>
+    suspend fun getItems(listId: String) : List<Item>
 }

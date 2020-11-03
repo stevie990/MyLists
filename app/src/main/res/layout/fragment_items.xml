@@ -23,7 +23,7 @@
                 android:id="@+id/items_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:items="@{itemsViewmodel.items}"
+                app:items="@{itemsViewmodel.viewState.items}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

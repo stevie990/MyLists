@@ -14,5 +14,5 @@ interface DaoService {
     // Item
     suspend fun insertItem(itemCacheEntity: ItemCacheEntity): Long
 
-    suspend fun getAllItems(): List<ItemCacheEntity>
+    fun getAllItems(listId: String): LiveData<List<ItemCacheEntity>>
 }

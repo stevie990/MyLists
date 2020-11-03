@@ -27,7 +27,7 @@ class CacheDataSourceImplementation constructor(
     }
 
     override suspend fun insertListOfLists(lists: List<MyList>) {
-        lists.forEach {list ->
+        lists.forEach { list ->
             daoService.insertList(listMapper.mapToEntity(list))
         }
     }
@@ -37,8 +37,16 @@ class CacheDataSourceImplementation constructor(
         return daoService.insertItem(itemMapper.mapToEntity(item))
     }
 
-    override suspend fun getItems(): List<Item> {
-        return itemMapper.entityListToItemList(daoService.getAllItems())
+    override fun getItems(listId: String): LiveData<List<Item>> {
+        return daoService.getAllItems(listId).map {
+            itemMapper.entityListToItemList(it)
+        }
+    }
+
+    override suspend fun insertListOfItems(items: List<Item>) {
+        items.forEach { item ->
+            daoService.insertItem(itemMapper.mapToEntity(item))
+        }
     }
 
 }

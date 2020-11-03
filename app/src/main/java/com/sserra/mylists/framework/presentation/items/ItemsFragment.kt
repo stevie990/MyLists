@@ -6,12 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.selection.*
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.sserra.mylists.R
 import com.sserra.mylists.business.domain.model.Item
 import com.sserra.mylists.databinding.FragmentItemsBinding
+import com.sserra.mylists.framework.presentation.items.state.ItemStateEvent
+import com.sserra.mylists.framework.presentation.items.state.ItemStateEvent.GetItemsEvent
 
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -52,6 +55,13 @@ class ItemsFragment : Fragment() {
         this.tracker?.onSaveInstanceState(outState)
         outState.putBoolean("IsInActionMode", isInActionMode)
         super.onSaveInstanceState(outState)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        subscribeObservers()
+        viewModel.setStateEvent(GetItemsEvent)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -164,7 +174,7 @@ class ItemsFragment : Fragment() {
 
     fun addNewItem(item: Item) {
         val newItem = viewModel.createNewItem(item.id, item.title, item.description)
-        viewModel.addNewItem(newItem)
+        viewModel.setStateEvent(ItemStateEvent.AddItemEvent(newItem))
     }
 
     fun deleteSelectedItems() {
@@ -207,5 +217,22 @@ class ItemsFragment : Fragment() {
         super.onDestroyView()
         _viewDataBinding = null
         _listAdapter = null
+    }
+
+    // *** CLEAN MVI *****************************
+
+    private fun subscribeObservers(){
+
+        viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
+
+            dataState.data?.let { event ->
+                event.getContentIfNotHandled()?.let { itemViewState ->
+
+                    itemViewState.items?.let {
+                        viewModel.setItems(it)
+                    }
+                }
+            }
+        })
     }
 }
